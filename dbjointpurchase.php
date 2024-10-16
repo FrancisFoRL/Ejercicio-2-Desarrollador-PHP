@@ -70,7 +70,8 @@ class Dbjointpurchase extends Module
         return parent::install() &&
             $this->registerHook('displayHeader') &&
             $this->registerHook('displayBackOfficeHeader') &&
-            $this->registerHook('displayFooterProduct');
+            $this->registerHook('displayFooterProduct') &&
+            $this->registerHook('displayProductButtons');
     }
 
     public function uninstall()
@@ -429,5 +430,28 @@ class Dbjointpurchase extends Module
         }
 
         return $excludes;
+    }
+
+    public function hookDisplayProductButtons($params)
+    {
+        $id_product = (int)$params['product']['id_product'];
+        $related_products = $this->getRelatedProducts($id_product);
+
+        $this->context->smarty->assign([
+            'related_products' => $related_products,
+        ]);
+
+        return $this->display(__FILE__, 'views/templates/hook/jointpurchase.tpl');
+    }
+
+    private function getRelatedProducts()
+    {
+        $related_products = [
+            Configuration::get('related_product_1'),
+            Configuration::get('related_product_2'),
+            Configuration::get('related_product_3'),
+        ];
+
+        return array_filter($related_products);
     }
 }

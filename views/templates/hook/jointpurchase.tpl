@@ -53,13 +53,21 @@
             <div class="icon_more_purchase">
                 <i class="material-icons">add</i>
             </div>
-            {foreach from=$productos item=products key=i}
-                {foreach from=$products item=producto}
-                    <div class="dbjointpurchase_product joint_product block_joint_{$i} active" data-bestproduct="{$producto.id_product}">
+            {if $related_products}
+                {foreach from=$related_products item=related_product}
+                    <div class="dbjointpurchase_product joint_product block_joint_{$related_product} active" data-bestproduct="{$related_product}">
                         {include file='module:dbjointpurchase/views/templates/hook/product_joint.tpl'}
                     </div>
                 {/foreach}
-            {/foreach}
+            {else}
+                {foreach from=$productos item=products key=i}
+                    {foreach from=$products item=producto}
+                        <div class="dbjointpurchase_product joint_product block_joint_{$i} active" data-bestproduct="{$producto.id_product}">
+                            {include file='module:dbjointpurchase/views/templates/hook/product_joint.tpl'}
+                        </div>
+                    {/foreach}
+                {/foreach}
+            {/if}
         </div>
         <div class="dbjointpurchase_footer">
             {*<span class="super_oferta">{l s='¡Oferta!' mod='dbjointpurchase'}</span>*}
